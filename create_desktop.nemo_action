@@ -1,0 +1,9 @@
+[Nemo Action]
+Active=true
+Name=Create Desktop
+Comment=Create shortcut to the executable
+Icon-Name=link
+Exec=mkdsk %F -o %P
+Selection=Single
+Extensions=any;
+Quote=double
