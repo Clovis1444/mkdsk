@@ -1,4 +1,10 @@
-// arg_options.rs
+//! # arg_options
+//! This module contains all possible arguments.
+//!
+//! # Add new argument
+//! To add new argument do the following:
+//! 1. Create argument handler function.
+//! 2. Create new `ArgOption` entry in `OPTION_LIST`. Pass **arg name** and **arg handler** to your `ArgOption` structure.
 
 use std::{path::PathBuf, process::exit};
 
@@ -6,11 +12,13 @@ use path_absolutize::Absolutize;
 
 use crate::Shortcut;
 
+/// Structure that contain **argument name** and **argument handler** function pointer.
 struct ArgOption<'a> {
     option: &'a str,
     handler: fn(&str, &mut Shortcut),
 }
 
+/// Cointans all arguments data.
 const OPTION_LIST: [ArgOption; 10] = [
     ArgOption {
         option: "-o",
@@ -54,6 +62,7 @@ const OPTION_LIST: [ArgOption; 10] = [
     },
 ];
 
+/// Function that call argument handler for all arguments, except arguments at `PATH_TO_EXEC_INDEX` position.
 pub fn validate_option(option: String, option_val: String, shortcut: &mut Shortcut) {
     for i in OPTION_LIST {
         if i.option == option {

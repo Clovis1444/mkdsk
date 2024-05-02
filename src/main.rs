@@ -8,10 +8,10 @@ use std::process::exit;
 use handler::*;
 use shortcut::Shortcut;
 
+/// Path to source executable must be provided at this position.
 const PATH_TO_EXEC_INDEX: usize = 0;
 
 fn main() {
-    // let mut args = std::env::args().skip(1);
     let mut args = std::env::args();
     args.next();
 

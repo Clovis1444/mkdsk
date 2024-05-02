@@ -1,4 +1,5 @@
-// handler.rs
+//! # handler
+//! This module contains functions that handles all arguments provided by the user.
 
 mod arg_options;
 
@@ -8,6 +9,8 @@ use std::{os::unix::fs::PermissionsExt, path::PathBuf, process::exit};
 pub use arg_options::validate_option;
 use path_absolutize::Absolutize;
 
+/// Prints help message. This function is called if `-h` or `--help` argument was provided, or if no arguments were provided.
+/// Program should be closed after calling this function.
 pub fn print_help() {
     let tab = "    ";
 
@@ -33,6 +36,9 @@ pub fn print_help() {
     println!("\nNote: if you want the application to be globally accessible use \"--out ~/.local/share/applications\"")
 }
 
+/// Handles argument at `PATH_TO_EXEC_INDEX` position.
+/// Closes program if executable cannot be found.
+/// Prints help message and closes program if argument value is `-h` or `--help`.
 pub fn handle_path(arg: String, shortcut: &mut Shortcut) {
     if arg == "--help" || arg == "-h" {
         print_help();

@@ -1,7 +1,9 @@
-// shortcut.rs
+//! # shortcut
+//! This module contains `Shortcut` structure that contains information about the `.desktop` file that will be created.
 
 use std::{env::current_dir, fs::File, io::Write, path::PathBuf, process::exit};
 
+/// Contains information about the `.desktop` file that will be created.
 #[derive(Debug)]
 pub struct Shortcut {
     exec: Option<PathBuf>,
@@ -24,6 +26,10 @@ impl Shortcut {
         }
     }
 
+    /// Creates .desktop file, pass all `Shortcut data` to it.
+    /// Will assert if any of the following fields is empty: `exec`, `out`, `name`.
+    /// This function will close the program if file creation fails.
+    /// Edit this function if you are plannig to add new `Shortcut` fields.
     pub fn create(&self) {
         assert!(&self.exec.is_some(), "exec must be set");
         assert!(&self.out.is_some(), "out must be set");
@@ -66,6 +72,8 @@ impl Shortcut {
         // file.metadata().unwrap().permissions().set_mode(0o111);
     }
 
+    /// Note: this functions sets not only the `exec` field, but also the `out` and `name` fields,
+    /// depending on the name of the executable file.
     pub fn set_exec(&mut self, exec: PathBuf) {
         self.exec = Some(exec);
 
