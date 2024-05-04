@@ -21,7 +21,7 @@ struct ArgOption<'a> {
 }
 
 /// Cointans all arguments data.
-const OPTION_LIST: [ArgOption; 28] = [
+const OPTION_LIST: [ArgOption; 33] = [
     ArgOption {
         option: "-o",
         handler: out_handler,
@@ -114,14 +114,14 @@ const OPTION_LIST: [ArgOption; 28] = [
         option: "--actions",
         handler: actions_handler,
     },
-    ArgOption {
-        option: "-u",
-        handler: url_handler,
-    },
-    ArgOption {
-        option: "--url",
-        handler: url_handler,
-    },
+    // ArgOption {
+    //     option: "-u",
+    //     handler: url_handler,
+    // },
+    // ArgOption {
+    //     option: "--url",
+    //     handler: url_handler,
+    // },
     ArgOption {
         option: "--non-default-gpu",
         handler: non_default_gpu_handler,
@@ -133,6 +133,34 @@ const OPTION_LIST: [ArgOption; 28] = [
     ArgOption {
         option: "--single-window",
         handler: single_main_window_handler,
+    },
+    ArgOption {
+        option: "-m",
+        handler: mime_type_handler,
+    },
+    ArgOption {
+        option: "--mime-type",
+        handler: mime_type_handler,
+    },
+    ArgOption {
+        option: "--categories",
+        handler: categories_handler,
+    },
+    ArgOption {
+        option: "--implements",
+        handler: implements_handler,
+    },
+    ArgOption {
+        option: "--keywords",
+        handler: keywords_handler,
+    },
+    ArgOption {
+        option: "--startup-notify",
+        handler: startup_notify_handler,
+    },
+    ArgOption {
+        option: "--startup-wm-class",
+        handler: startup_wm_class_handler,
     },
 ];
 
@@ -257,9 +285,9 @@ fn terminal_handler(value: &str, shortcut: &mut Shortcut) {
 fn actions_handler(value: &str, shortcut: &mut Shortcut) {
     shortcut.set_actions(value.to_string());
 }
-fn url_handler(value: &str, shortcut: &mut Shortcut) {
-    shortcut.set_url(value.to_string());
-}
+// fn url_handler(value: &str, shortcut: &mut Shortcut) {
+//     shortcut.set_url(value.to_string());
+// }
 fn non_default_gpu_handler(value: &str, shortcut: &mut Shortcut) {
     let non_default_gpu = match value.to_lowercase().as_str() {
         "true" | "1" => true,
@@ -283,6 +311,33 @@ fn single_main_window_handler(value: &str, shortcut: &mut Shortcut) {
     };
 
     shortcut.set_single_main_window(single_main_window);
+}
+fn mime_type_handler(value: &str, shortcut: &mut Shortcut) {
+    shortcut.set_mime_type(value.to_string());
+}
+fn categories_handler(value: &str, shortcut: &mut Shortcut) {
+    shortcut.set_categories(value.to_string());
+}
+fn implements_handler(value: &str, shortcut: &mut Shortcut) {
+    shortcut.set_implements(value.to_string());
+}
+fn keywords_handler(value: &str, shortcut: &mut Shortcut) {
+    shortcut.set_keywords(value.to_string());
+}
+fn startup_notify_handler(value: &str, shortcut: &mut Shortcut) {
+    let startup_notify = match value.to_lowercase().as_str() {
+        "true" | "1" => true,
+        "false" | "0" => false,
+        _ => {
+            println!("mkdsk: invalid option value");
+            exit(15)
+        }
+    };
+
+    shortcut.set_startup_notify(startup_notify);
+}
+fn startup_wm_class_handler(value: &str, shortcut: &mut Shortcut) {
+    shortcut.set_startup_wm_class(value.to_string());
 }
 
 #[cfg(test)]

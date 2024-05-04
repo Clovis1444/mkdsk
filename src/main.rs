@@ -8,8 +8,9 @@ use std::process::exit;
 use handler::*;
 use shortcut::Shortcut;
 
-/// Path to source executable must be provided at this position.
-const PATH_TO_EXEC_INDEX: usize = 0;
+// TODO(clovis): create "settings" mod to store global variables
+/// Entry source must be provided at this position.
+const ENTRY_SOURCE_INDEX: usize = 0;
 
 fn main() {
     let mut args = std::env::args();
@@ -24,8 +25,8 @@ fn main() {
 
     let mut iter = args.enumerate();
     while let Some((i, arg)) = iter.next() {
-        if i == PATH_TO_EXEC_INDEX {
-            handle_path(arg, &mut shortcut);
+        if i == ENTRY_SOURCE_INDEX {
+            validate_source(arg, &mut shortcut);
         } else {
             let (_, option_val) = match iter.next() {
                 Some(val) => val,
