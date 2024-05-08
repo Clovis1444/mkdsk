@@ -27,6 +27,7 @@ pub fn print_help() {
 
     println!("options:");
     println!("{tab}{:<30} display this help and exit", "-h, --help");
+    println!("{tab}{:<30} display program version", "-v, --version");
     println!(
         "{tab}{:<20}{:<10} set output directory. Current directory is used by default",
         "-o, --out", "[str]"
@@ -129,15 +130,36 @@ pub fn print_help() {
     println!("\nFor more info see: https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html")
 }
 
+fn print_version() {
+    println!("mkdsk version {PROGRAM_VERSION}");
+
+    println!("\nFor more info see: {PROGRAM_GITHUB}");
+}
+
 /// Validates argument at `ENTRY_SOURCE_INDEX` position.
 /// Closes program if source is not a url/dir/executable.
 /// Prints help message and closes program if argument value is `-h` or `--help`.
+/// Prints program version and closes program if argument value is `-v` or `--version`.
 ///
 /// This function also sets default output path and default name.
 pub fn validate_source(arg: String, shortcut: &mut Shortcut) {
+    // Handle help arg
     if arg == "--help" || arg == "-h" {
         print_help();
         exit(0);
+    }
+    match arg.as_str() {
+        // Help arg
+        "--help" | "-h" => {
+            print_help();
+            exit(0);
+        }
+        // Version arg
+        "--version" | "-v" => {
+            print_version();
+            exit(0);
+        }
+        _ => (),
     }
 
     let exec = PathBuf::from(&arg);
