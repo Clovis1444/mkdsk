@@ -84,6 +84,14 @@ impl Shortcut {
         file_name.push_str(".desktop");
         let file_path = self.out.clone().unwrap().join(file_name);
 
+        // Check if file already exists
+        if file_path.exists() {
+            // Exit if user does not want to overwrite existing file
+            if !self.ask_user_overwrite() {
+                exit(0);
+            }
+        }
+
         let mut file = match File::create(file_path.clone()) {
             Ok(val) => val,
             Err(e) => {
@@ -267,6 +275,39 @@ impl Shortcut {
     }
     pub fn set_startup_wm_class(&mut self, startup_wm_class: String) {
         self.startup_wm_class = startup_wm_class
+    }
+
+    /// Asks user to overwrite file if the file is already exists.
+    fn ask_user_overwrite(&self) -> bool {
+        let mut file_name = self.name.clone();
+        file_name.push_str(".desktop");
+
+        println!(
+            "\"{}\" already exists in {:#?}. Do you want to replace it?[Y/N]: ",
+            file_name,
+            self.out.clone().unwrap()
+        );
+
+        let mut user_input = String::new();
+
+        loop {
+            match std::io::stdin().read_line(&mut user_input) {
+                Err(e) => {
+                    println!("mkdsk: {e}");
+                    exit(16)
+                }
+                Ok(_) => (),
+            };
+
+            match user_input.to_lowercase().as_str().trim() {
+                "y" => return true,
+                "n" => return false,
+                _ => {
+                    user_input.clear();
+                    continue;
+                }
+            }
+        }
     }
 }
 

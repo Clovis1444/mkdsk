@@ -3,6 +3,7 @@
 
 mod arg_options;
 
+use crate::settings::*;
 use crate::shortcut::{EntryType, Shortcut};
 use std::{env::current_dir, os::unix::fs::PermissionsExt, path::PathBuf, process::exit};
 
@@ -148,7 +149,7 @@ pub fn validate_source(arg: String, shortcut: &mut Shortcut) {
         shortcut.set_entry_type(EntryType::Link);
 
         shortcut.set_url(arg.clone());
-        shortcut.set_name("link".to_string());
+        shortcut.set_name(DEFAULT_LINK_NAME.to_string());
 
         return;
     } else if exec.is_dir() {
@@ -168,6 +169,14 @@ pub fn validate_source(arg: String, shortcut: &mut Shortcut) {
 
             shortcut.set_name(String::from(exec.file_name().unwrap().to_str().unwrap()));
         }
+
+        return;
+    } else if let Ok(_) = which::which(&arg) {
+        shortcut.set_entry_type(EntryType::Application);
+
+        shortcut.set_exec(PathBuf::from(&arg));
+
+        shortcut.set_name(arg);
 
         return;
     }

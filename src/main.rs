@@ -1,16 +1,14 @@
 // main.rs
 
 mod handler;
+mod settings;
 mod shortcut;
 
 use std::process::exit;
 
 use handler::*;
+use settings::*;
 use shortcut::Shortcut;
-
-// TODO(clovis): create "settings" mod to store global variables
-/// Entry source must be provided at this position.
-const ENTRY_SOURCE_INDEX: usize = 0;
 
 fn main() {
     let mut args = std::env::args();
